@@ -80,7 +80,7 @@ export default function App() {
       <footer
         style={{
           position: 'fixed',
-          bottom: '72px', // 关键：避开 bottom-nav
+          bottom: 'var(--bottom-nav-height)',
           width: '100%',
           textAlign: 'center',
           fontSize: '12px',
