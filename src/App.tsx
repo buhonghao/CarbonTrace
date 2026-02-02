@@ -76,6 +76,29 @@ export default function App() {
         </button>
       </nav>
 
+      {/* 备案信息：固定在底部导航上方 */}
+      <footer
+        style={{
+          position: 'fixed',
+          bottom: '56px', // 关键：避开 bottom-nav
+          width: '100%',
+          textAlign: 'center',
+          fontSize: '12px',
+          color: '#999',
+          zIndex: 10,
+          pointerEvents: 'auto'
+        }}
+      >
+        <a
+          href="https://beian.miit.gov.cn/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          湘ICP备2026003711号-1
+        </a>
+      </footer>
+      
       <AnimatePresence>
         {showAddModal && <AddActivityModal onClose={() => setShowAddModal(false)} />}
         {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
