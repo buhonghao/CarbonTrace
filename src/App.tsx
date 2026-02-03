@@ -12,21 +12,6 @@ import SettingsModal from './components/SettingsModal'
 type TabType = 'home' | 'stats' | 'settings'
 
 export default function App() {
-
-  const BOTTOM_NAV_HEIGHT = 64
-  const [showBeian, setShowBeian] = useState(false)
-
-  useEffect(() => {
-    fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      .then(data => {
-        if (data?.country_code === 'CN') {
-          setShowBeian(true)
-        }
-      })
-      .catch(() => {})
-  }, [])
-
   const [activeTab, setActiveTab] = useState<TabType>('home')
   const [showAddModal, setShowAddModal] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
@@ -91,53 +76,54 @@ export default function App() {
         </button>
       </nav>
       
-      {showBeian && (
-        <footer
-          style={{
-            position: 'fixed',
-            bottom: `${BOTTOM_NAV_HEIGHT}px`,
-            left: 0,
-            width: '100%',
-            textAlign: 'center',
-            fontSize: '12px',
-            color: 'rgba(0,0,0,0.65)',
-            zIndex: 9
-          }}
-        >
-          <div>
-            <a
-              href="https://beian.miit.gov.cn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              备案号：湘ICP备2026003711号-1
-            </a>
-          </div>
+      {/* 备案信息：固定在底部导航上方 */}
+      <footer
+        style={{
+          position: 'fixed',
+          bottom: 'var(--bottom-nav-height)',
+          width: '100%',
+          textAlign: 'center',
+          fontSize: '12px',
+          color: 'rgba(0,0,0,0.55)',
+          zIndex: 10,
+          pointerEvents: 'auto'
+        }}
+      >
+        {/* 工信部备案 */}
+        <div>
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
+            备案号：湘ICP备2026003711号-1
+          </a>
+        </div>
 
-          <div style={{ marginTop: 4 }}>
-            <a
-              href="https://beian.mps.gov.cn/#/query/webSearch?code=43092102000906"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                color: 'inherit',
-                textDecoration: 'none'
-              }}
-            >
-              <img
-                src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png"
-                alt="公安备案"
-                style={{ width: 14, height: 14 }}
-              />
-              湘公网安备43092102000906号
-            </a>
-          </div>
-        </footer>
-      )}
+        {/* 公安备案 */}
+        <div style={{ marginTop: 4 }}>
+          <a
+           href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: 'inherit',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4
+            }}
+          >
+            <img
+              src="https://www.beian.gov.cn/img/new/gongan.png"
+              alt="公安备案"
+              style={{ width: 14, height: 14 }}
+            />
+            湘公网安备43092102000906号
+          </a>
+        </div>
+      </footer>
       
       <AnimatePresence>
         {showAddModal && <AddActivityModal onClose={() => setShowAddModal(false)} />}
