@@ -15,26 +15,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home')
   const [showAddModal, setShowAddModal] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
-  const [showBeian, setShowBeian] = useState(false)
 
   const { getTodayCarbon, dailyGoal } = useCarbonStore()
   const todayCarbon = getTodayCarbon()
-
-  // 仅大陆 IP 显示备案（失败即隐藏，最安全）
-  useEffect(() => {
-    fetch('https://checkip.synology.com/', { cache: 'no-store' })
-      .then(res => res.text())
-      .then(text => {
-        // 只要能拿到 IP 文本，就认为是国内
-        if (/Current IP Address:\s*\d+\.\d+\.\d+\.\d+/.test(text)) {
-          setShowBeian(true)
-        }
-      })
-      .catch(() => {
-        // 任何异常都不显示备案（海外 / 被墙 / 扫描器）
-      })
-  }, [])
-
 
   return (
     // ⚠️ 关键：给底部 tab + 备案留真实空间
@@ -54,7 +37,6 @@ export default function App() {
       </main>
 
       {/* 备案信息（不再 fixed，永不与 tab 重叠） */}
-      {showBeian && (
         <div
           style={{
             paddingTop: '6px',
@@ -64,8 +46,8 @@ export default function App() {
             color: 'rgba(0,0,0,0.6)'
           }}
         >
-          {/* 工信部备案 */}
-          <div>
+       {/* 工信部备案 */}
+        <div>
             <a
               href="https://beian.miit.gov.cn/"
               target="_blank"
@@ -74,7 +56,7 @@ export default function App() {
             >
               备案号：湘ICP备2026003711号-1
             </a>
-          </div>
+        </div>
 
           {/* 公安备案 */}
           <div style={{ marginTop: 4 }}>
@@ -99,7 +81,7 @@ export default function App() {
             </a>
           </div>
         </div>
-      )}
+      )
 
       {/* 底部导航（唯一 fixed 的东西） */}
       <nav className="bottom-nav">
