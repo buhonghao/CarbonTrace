@@ -22,7 +22,7 @@ export default function App() {
 
   // 仅大陆 IP 显示备案（失败即隐藏，最安全）
   useEffect(() => {
-    fetch('https://ipapi.co/json/')
+    fetch('https://checkip.synology.com/')
       .then(res => res.json())
       .then(data => {
         if (data?.country_code === 'CN') {
