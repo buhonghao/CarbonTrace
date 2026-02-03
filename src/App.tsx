@@ -11,8 +11,6 @@ import SettingsModal from './components/SettingsModal'
 
 type TabType = 'home' | 'stats' | 'settings'
 
-const BOTTOM_NAV_HEIGHT = 64
-
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home')
   const [showAddModal, setShowAddModal] = useState(false)
@@ -22,7 +20,7 @@ export default function App() {
   const { getTodayCarbon, dailyGoal } = useCarbonStore()
   const todayCarbon = getTodayCarbon()
 
-  // 仅大陆 IP 显示备案
+  // 仅大陆 IP 显示备案（失败即隐藏，最安全）
   useEffect(() => {
     fetch('https://ipapi.co/json/')
       .then(res => res.json())
@@ -31,13 +29,12 @@ export default function App() {
           setShowBeian(true)
         }
       })
-      .catch(() => {
-        // 失败默认隐藏，最安全
-      })
+      .catch(() => {})
   }, [])
 
   return (
-    <div className="min-h-screen pb-20">
+    // ⚠️ 关键：给底部 tab + 备案留真实空间
+    <div className="min-h-screen pb-[96px]">
       <Header />
 
       <main className="container mx-auto px-4 py-6 max-w-lg">
@@ -52,7 +49,55 @@ export default function App() {
         {activeTab === 'stats' && <StatsPanel />}
       </main>
 
-      {/* 底部导航 */}
+      {/* 备案信息（不再 fixed，永不与 tab 重叠） */}
+      {showBeian && (
+        <div
+          style={{
+            paddingTop: '6px',
+            paddingBottom: '8px',
+            textAlign: 'center',
+            fontSize: '12px',
+            color: 'rgba(0,0,0,0.6)'
+          }}
+        >
+          {/* 工信部备案 */}
+          <div>
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'inherit', textDecoration: 'none' }}
+            >
+              备案号：湘ICP备2026003711号-1
+            </a>
+          </div>
+
+          {/* 公安备案 */}
+          <div style={{ marginTop: 4 }}>
+            <a
+              href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                color: 'inherit',
+                textDecoration: 'none'
+              }}
+            >
+              <img
+                src="https://www.beian.gov.cn/img/new/gongan.png"
+                alt="公安备案"
+                style={{ width: 14, height: 14 }}
+              />
+              湘公网安备43092102000906号
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* 底部导航（唯一 fixed 的东西） */}
       <nav className="bottom-nav">
         <button
           onClick={() => setActiveTab('home')}
@@ -87,60 +132,11 @@ export default function App() {
           className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
         >
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+            <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24,1.13-.56,1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
           </svg>
           <span className="text-xs">设置</span>
         </button>
       </nav>
-
-      {/* 备案信息（仅大陆显示，不与 Tab 重叠） */}
-      {showBeian && (
-        <footer
-          style={{
-            position: 'fixed',
-            bottom: `${BOTTOM_NAV_HEIGHT}px`,
-            left: 0,
-            width: '100%',
-            textAlign: 'center',
-            fontSize: '12px',
-            color: 'rgba(0,0,0,0.6)',
-            zIndex: 9
-          }}
-        >
-          <div>
-            <a
-              href="https://beian.miit.gov.cn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              湘ICP备2026003711号-1
-            </a>
-          </div>
-
-          <div style={{ marginTop: 4 }}>
-            <a
-              href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                color: 'inherit',
-                textDecoration: 'none'
-              }}
-            >
-              <img
-                src="https://www.beian.gov.cn/img/new/gongan.png"
-                alt="公安备案"
-                style={{ width: 14, height: 14 }}
-              />
-              湘公网安备43092102000906号
-            </a>
-          </div>
-        </footer>
-      )}
 
       <AnimatePresence>
         {showAddModal && <AddActivityModal onClose={() => setShowAddModal(false)} />}
