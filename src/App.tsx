@@ -22,15 +22,26 @@ export default function App() {
 
   // 仅大陆 IP 显示备案（失败即隐藏，最安全）
   useEffect(() => {
-    fetch('https://checkip.synology.com/')
-      .then(res => res.json())
-      .then(data => {
-        if (data?.country_code === 'CN') {
+    fetch('你的新接口地址', { cache: 'no-store' })
+      .then(res => res.text())
+      .then(text => {
+        // 期望格式：Current IP Address: x.x.x.x
+        const match = text.match(/Current IP Address:\s*([\d.]+)/)
+
+        if (match && match[1]) {
+          // 能拿到 IP，说明是国内 → 显示备案
           setShowBeian(true)
+        } else {
+          // 格式不对，保险起见隐藏
+          setShowBeian(false)
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        // 请求失败（海外/被限速）→ 隐藏备案
+        setShowBeian(false)
+      })
   }, [])
+
 
   return (
     // ⚠️ 关键：给底部 tab + 备案留真实空间
