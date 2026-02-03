@@ -95,7 +95,6 @@ export default function App() {
             href="https://beian.miit.gov.cn/"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: 'inherit', textDecoration: 'none' }}
           >
             备案号：湘ICP备2026003711号-1
           </a>
@@ -104,15 +103,13 @@ export default function App() {
         {/* 公安备案 */}
         <div style={{ marginTop: 4 }}>
           <a
-           href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
+            href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: 'inherit',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 4
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4
             }}
           >
             <img
