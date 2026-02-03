@@ -22,7 +22,7 @@ export default function App() {
 
   // 仅大陆 IP 显示备案（失败即隐藏，最安全）
   useEffect(() => {
-    fetch('你的新接口地址', { cache: 'no-store' })
+    fetch('https://checkip.synology.com/', { cache: 'no-store' })
       .then(res => res.text())
       .then(text => {
         // 期望格式：Current IP Address: x.x.x.x
