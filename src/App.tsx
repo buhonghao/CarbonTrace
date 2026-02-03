@@ -75,28 +75,54 @@ export default function App() {
           <span className="text-xs">设置</span>
         </button>
       </nav>
-
+      
       {/* 备案信息：固定在底部导航上方 */}
       <footer
         style={{
           position: 'fixed',
-          bottom: 'var(--bottom-nav-height)',
+         bottom: 'var(--bottom-nav-height)',
           width: '100%',
           textAlign: 'center',
           fontSize: '12px',
-          color: 'rgba(0,0,0,0.55)',
+         color: 'rgba(0,0,0,0.55)',
           zIndex: 10,
           pointerEvents: 'auto'
         }}
       >
-        <a
-          href="https://beian.miit.gov.cn/"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: 'inherit', textDecoration: 'none' }}
-        >
-          备案号：湘ICP备2026003711号-1
-        </a>
+        {/* 工信部备案 */}
+        <div>
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
+            备案号：湘ICP备2026003711号-1
+          </a>
+        </div>
+
+        {/* 公安备案 */}
+        <div style={{ marginTop: 4 }}>
+          <a
+           href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: 'inherit',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4
+            }}
+          >
+            <img
+              src="https://www.beian.gov.cn/img/new/gongan.png"
+              alt="公安备案"
+              style={{ width: 14, height: 14 }}
+            />
+            湘公网安备43092102000906号
+          </a>
+        </div>
       </footer>
       
       <AnimatePresence>
