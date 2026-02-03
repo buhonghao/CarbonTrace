@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useCarbonStore } from './store/carbonStore'
 import Header from './components/Header'
@@ -20,8 +20,12 @@ export default function App() {
   const todayCarbon = getTodayCarbon()
 
   return (
-    // ⚠️ 关键：给底部 tab + 备案留真实空间
-    <div className="min-h-screen pb-[96px]">
+    /**
+     * 关键点：
+     * 1️⃣ pb-[128px] 给「备案 + tab」留足真实空间
+     * 2️⃣ 备案不 fixed，tab 才 fixed
+     */
+    <div className="min-h-screen pb-[128px]">
       <Header />
 
       <main className="container mx-auto px-4 py-6 max-w-lg">
@@ -36,54 +40,54 @@ export default function App() {
         {activeTab === 'stats' && <StatsPanel />}
       </main>
 
-      {/* 备案信息（不再 fixed，永不与 tab 重叠） */}
-        <div
-          style={{
-            paddingTop: '6px',
-            paddingBottom: '8px',
-            textAlign: 'center',
-            fontSize: '12px',
-            color: 'rgba(0,0,0,0.6)'
-          }}
-        >
-       {/* 工信部备案 */}
+      {/* ===== 备案信息（正常文档流，永不重叠） ===== */}
+      <div
+        style={{
+          marginTop: 8,
+          marginBottom: 12,
+          textAlign: 'center',
+          fontSize: '12px',
+          color: 'rgba(0,0,0,0.6)',
+          lineHeight: 1.6
+        }}
+      >
+        {/* 工信部备案 */}
         <div>
-            <a
-              href="https://beian.miit.gov.cn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              备案号：湘ICP备2026003711号-1
-            </a>
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
+            备案号：湘ICP备2026003711号-1
+          </a>
         </div>
 
-          {/* 公安备案 */}
-          <div style={{ marginTop: 4 }}>
-            <a
-              href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                color: 'inherit',
-                textDecoration: 'none'
-              }}
-            >
-              <img
-                src="https://www.beian.gov.cn/img/new/gongan.png"
-                alt="公安备案"
-                style={{ width: 14, height: 14 }}
-              />
-              湘公网安备43092102000906号
-            </a>
-          </div>
+        {/* 公安备案 */}
+        <div>
+          <a
+            href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43092102000906"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              color: 'inherit',
+              textDecoration: 'none'
+            }}
+          >
+            <img
+              src="https://www.beian.gov.cn/img/new/gongan.png"
+              alt="公安备案"
+              style={{ width: 14, height: 14 }}
+            />
+            湘公网安备43092102000906号
+          </a>
         </div>
-      )
+      </div>
 
-      {/* 底部导航（唯一 fixed 的东西） */}
+      {/* ===== 底部导航（唯一 fixed 元素） ===== */}
       <nav className="bottom-nav">
         <button
           onClick={() => setActiveTab('home')}
@@ -97,7 +101,12 @@ export default function App() {
 
         <button onClick={() => setShowAddModal(true)} className="nav-item">
           <div className="w-12 h-12 -mt-6 bg-gradient-leaf rounded-full flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           </div>
